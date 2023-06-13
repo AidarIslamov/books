@@ -2,6 +2,8 @@
 
 namespace frontend\controllers;
 
+use common\models\Author;
+use common\models\User;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -75,7 +77,14 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $authorsList = User::find()
+            ->select(['user.id', 'user.username'])
+            ->innerJoin(Author::tableName(), Author::tableName() . '.user_id = user.id')
+            ->distinct()
+            ->all()
+        ;
+        
+        return $this->render('index', compact('authorsList'));
     }
 
     /**
