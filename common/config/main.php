@@ -10,5 +10,5 @@ return [
             'class' => \yii\caching\FileCache::class,
         ],
     ],
-    'name' => 'Books'
+    'name' => 'Books app'
 ];
