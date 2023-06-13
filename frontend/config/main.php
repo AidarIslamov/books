@@ -15,6 +15,7 @@ return [
         'request' => [
             'csrfParam' => '_csrf-frontend',
             'baseUrl' => '',
+            'enableCsrfValidation' => false
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -43,7 +44,7 @@ return [
             'showScriptName' => false,
             'rules' => [
                  'about' => 'site/about',
-                 '<action:\w+>' => 'site/<action>',
+                 '<controller>/<action>' => '<controller>/<action>',
             ],
         ]
     ],

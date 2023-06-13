@@ -3,12 +3,12 @@
 use yii\db\Migration;
 
 /**
- * Handles the creation of table `{{%books}}`.
+ * Handles the creation of table `{{%book}}`.
  */
-class m230613_161400_create_books_table extends Migration
+class m230613_161400_create_book_table extends Migration
 {
     
-    const TABLE_NAME = '{{%books}}';
+    const TABLE_NAME = '{{%book}}';
     /**
      * {@inheritdoc}
      */
@@ -25,11 +25,11 @@ class m230613_161400_create_books_table extends Migration
             'updated_at' => $this->integer()->notNull()
         ]);
         
-        $this->createIndex('IDX_books__title', self::TABLE_NAME, 'title');
-        $this->createIndex('IDX_books__isbn', self::TABLE_NAME, 'isbn');
-        $this->createIndex('IDX_books__year', self::TABLE_NAME, 'year');
-        $this->createIndex('IDX_books__created_at', self::TABLE_NAME, 'created_at');
-        $this->createIndex('IDX_books__updated_at', self::TABLE_NAME, 'updated_at');
+        $this->createIndex('IDX_book__title', self::TABLE_NAME, 'title');
+        $this->createIndex('IDX_book__isbn', self::TABLE_NAME, 'isbn');
+        $this->createIndex('IDX_book__year', self::TABLE_NAME, 'year');
+        $this->createIndex('IDX_book__created_at', self::TABLE_NAME, 'created_at');
+        $this->createIndex('IDX_book__updated_at', self::TABLE_NAME, 'updated_at');
     }
 
     /**

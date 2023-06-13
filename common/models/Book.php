@@ -5,7 +5,7 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "books".
+ * This is the model class for table "book".
  *
  * @property int $id ID
  * @property string $title Tittle of book
@@ -16,14 +16,14 @@ use Yii;
  * @property int $created_at
  * @property int $updated_at
  */
-class Books extends \yii\db\ActiveRecord
+class Book extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'books';
+        return '{{%book}}';
     }
 
     /**
@@ -59,10 +59,10 @@ class Books extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return \common\models\ActiveQuery\BooksQuery the active query used by this AR class.
+     * @return \common\models\ActiveQuery\BookQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \common\models\ActiveQuery\BooksQuery(get_called_class());
+        return new \common\models\ActiveQuery\BookQuery(get_called_class());
     }
 }
