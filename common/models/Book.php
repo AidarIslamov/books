@@ -15,6 +15,9 @@ use Yii;
  * @property string|null $description Description of book
  * @property int $created_at
  * @property int $updated_at
+ *
+ *
+ * @property User[] $author
  */
 class Book extends \yii\db\ActiveRecord
 {
@@ -64,5 +67,11 @@ class Book extends \yii\db\ActiveRecord
     public static function find()
     {
         return new \common\models\ActiveQuery\BookQuery(get_called_class());
+    }
+    
+    public function getAuthor()
+    {
+        return $this->hasMany(User::class, ['id' => 'user_id'])
+            ->viaTable(Author::tableName(), ['book_id' => 'id']);
     }
 }
