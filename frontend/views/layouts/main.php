@@ -36,11 +36,12 @@ AppAsset::register($this);
         ],
     ]);
     
-    $menuItems = [
-        ['label' => 'About', 'url' => Url::to('/about')],
-    ];
+    $menuItems = [];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
+    }
+    else {
+        $menuItems[] =  ['label' => 'My books', 'url' => Url::to('/book')];
     }
 
     echo Nav::widget([

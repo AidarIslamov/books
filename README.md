@@ -1,7 +1,7 @@
 ### Paths:
 `/` frontend
 
-`/admin` admin side(backend)
+`/admin` admin side(backend) - not used, but may if need ))
 
 DIRECTORY STRUCTURE
 -------------------

@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    const onlyMyFilter = $('#only_my')
+
     const table = $('#data-table').DataTable({
         responsive: true,
         processing: true,
@@ -7,9 +9,12 @@ $(document).ready(function () {
         stateDuration: 60 * 60 * 24,
         pageLength: 25,
         ajax: {
-            url: `book/list`,
+            url: `book/list-data-table`,
             type: 'POST',
             data: function (data) {
+                if(onlyMyFilter.length) {
+                    data.only_my = onlyMyFilter.is(':checked')
+                }
 
             }
         },
@@ -19,7 +24,8 @@ $(document).ready(function () {
             { data: 'isbn', title: 'ISBN' }, // 2
             { data: 'year', title: 'Year' }, // 3
             { data: 'description', title: 'About', width: '25%' }, // 4
-            { data: 'author', title: 'Autors' } // 5
+            { data: 'author', title: 'Autors' }, // 5
+            { data: null, title: 'Actions' } // 6
         ],
         columnDefs: [
             {
@@ -32,6 +38,14 @@ $(document).ready(function () {
                         })
                         return authors;
                     }
+                    return null;
+                }
+            },
+            {
+                target: 6,
+                visible: window.hasOwnProperty('USER'),
+                render: function (data, type, row, meta) {
+
                     return null;
                 }
             }
