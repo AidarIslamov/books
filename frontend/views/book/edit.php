@@ -15,12 +15,12 @@
 <div class="body-content">
     <div class="row">
         <div class="col-12">
+            
             <?php
                 $form = ActiveForm::begin([
                     'id' => 'form-edit-book',
                 ]);
                 ?>
-                <?= $form->field($book, 'file')->fileInput() ?>
                 <?= $form->field($book, 'id')->hiddenInput()->label(false) ?>
                 <?= $form->field($book, 'title')->textInput()->label('Title') ?>
                 <?= $form->field($book, 'isbn')->textInput() ?>
@@ -30,19 +30,15 @@
                     'max'=> date('Y'),
                 ]) ?>
             
-                <?= $form->field($book, 'author')->dropDownList(
+                <?= $form->field($book, '_author')->dropDownList(
                     ArrayHelper::map($authors, 'id', 'username'),
-                    ['multiple' => true, 'value' => user()->id]
-                ) ?>
+                    ['multiple' => true, 'value' => ArrayHelper::getColumn($book->author, 'id')]
+                );
                 
+            ?>
                 <?= Html::submitButton('Save', [
                     'class' => 'btn btn-success',
                     'name' => 'save',
-                    'form' => 'form-edit-book',
-                ]) ?>
-                <?= Html::resetButton('Delete book', [
-                    'class' => 'btn btn-danger',
-                    'name' => 'save-and-exit',
                     'form' => 'form-edit-book',
                 ]) ?>
             

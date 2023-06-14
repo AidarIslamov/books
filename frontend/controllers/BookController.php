@@ -8,7 +8,9 @@
     use frontend\controllers\actions\BookListAction;
     use yii\filters\AccessControl;
     use yii\web\Controller;
+    use yii\web\ForbiddenHttpException;
     use yii\web\NotFoundHttpException;
+    use Yii;
     
     class BookController extends Controller
     {
@@ -59,15 +61,38 @@
         {
             if (!$book = Book::find()
                 ->innerJoinWith('author')
-                ->where([Book::tableName() . '.id' => $id, Author::tableName() . '.user_id' => user()->id])
+                ->where([Book::tableName() . '.id' => $id])
                 ->one()) {
                 throw new NotFoundHttpException('Book not found');
             }
             
+            if(!$book->isAuthor()) {
+                throw new ForbiddenHttpException('Book not your');
+            }
+            
+            if(Yii::$app->request->isDelete) {
+                return $this->asJson(['success' => $book->delete()]);
+            }
+            
+            if(Yii::$app->request->isPost && $book->load(Yii::$app->request->post())) {
+                if(!$book->save()) {
+                    return $book->errors;
+                }
+                $book->refresh();
+                
+                if(!$book->isAuthor()) {
+                    throw new ForbiddenHttpException('Book not your');
+                }
+            }
+            
+            // $file = UploadedFile::getInstanceByName("file");
+            
             $this->view->title = 'Edit book';
             $authors = User::find()->all();
+
             
             return $this->render('edit', compact('book', 'authors'));
         
         }
+        
     }

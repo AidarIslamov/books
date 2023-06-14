@@ -47,7 +47,9 @@ $(document).ready(function () {
                 render: function (data, type, row, meta) {
                     if(window.hasOwnProperty('USER')) {
                         if(row.author.find(o => o.id === window.USER.id)) {
-                            return `<a href='${URL_edit_book}/${row.id}' >Edit</a>`
+                            return (
+                                `<a href='${URL_edit_book}/${row.id}' >Edit</a> <br> <a href='${URL_edit_book}/${row.id}' class="delete_book_btn" >Delete</a>`
+                            )
                         }
                     }
                     else {
@@ -109,5 +111,21 @@ $(document).ready(function () {
     });
     // END filters
 
+
+    // Begin book delete
+    $(document).on('click', '.delete_book_btn', function(e) {
+        e.preventDefault();
+        const url = $(this).attr('href');
+        if(confirm('You sure?')) {
+            $.ajax({
+                url,
+                method: 'DELETE'
+            }).then(()=>{
+                table.table().draw();
+            })
+        }
+
+    })
+    // END book delete
 
 })
