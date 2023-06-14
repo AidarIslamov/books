@@ -40,6 +40,11 @@
             "frontend\\tests\\": ["frontend/tests/", "frontend/tests/_support"]
         }
     },
+    "autoload": {
+        "files": [
+            "common/helpers.php"
+        ]
+    },
     "config": {
         "allow-plugins": {
             "yiisoft/yii2-composer" : true

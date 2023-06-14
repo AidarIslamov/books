@@ -7,7 +7,7 @@
     /** @var User[] $authorsList */
     
     $this->title = 'Books list';
-    $currentUser = Yii::$app->user->identity;
+    $currentUser = user();
     
     $js = <<<JS
 window.USER = {
@@ -17,6 +17,8 @@ window.USER = {
 JS;
     
     $this->registerJs($js, View::POS_READY);
+    $this->registerJsVar('URL_edit_book', \yii\helpers\Url::to('/book/edit'), View::POS_HEAD);
+    
     $this->registerJsFile('/js/datatable.js', ['depends' => [\yii\web\JqueryAsset::class]]);
 ?>
 <div class="site-index">
