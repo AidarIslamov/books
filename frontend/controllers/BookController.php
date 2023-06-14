@@ -26,7 +26,7 @@
                             'roles' => ['?', '@'],
                         ],
                         [
-                            'actions' => ['index', 'edit'],
+                            'actions' => ['index', 'edit', 'create'],
                             'allow' => true,
                             'roles' => ['@'],
                         ],
@@ -89,10 +89,24 @@
             
             $this->view->title = 'Edit book';
             $authors = User::find()->all();
-
             
             return $this->render('edit', compact('book', 'authors'));
+        }
         
+        public function actionCreate()
+        {
+            $book = new Book();
+            
+            if(Yii::$app->request->isPost && $book->load(Yii::$app->request->post())) {
+                if($book->save()) {
+                    return $this->redirect(\yii\helpers\Url::toRoute(['book/edit', 'id' => $book->id]));
+                }
+            }
+            
+            $this->view->title = 'Create book';
+            $authors = User::find()->all();
+            
+            return $this->render('create', compact('book', 'authors'));
         }
         
     }

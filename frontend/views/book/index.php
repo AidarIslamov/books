@@ -23,7 +23,11 @@ JS;
 ?>
 <div class="site-index">
     <div class="body-content">
-        
+        <div class="row mb-4">
+            <div class="col">
+                <a href="<?=\yii\helpers\Url::to('/book/create') ?>" class="btn btn-success">Create book</a>
+            </div>
+        </div>
         <div class="row">
             <div class="col-12">
                 <form class="row" id="table_filter">

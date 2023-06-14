@@ -61,7 +61,7 @@ class Book extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'isbn', 'year', 'created_at', 'updated_at'], 'required'],
+            [['title', 'isbn', 'year'], 'required'],
             [['year', 'created_at', 'updated_at'], 'integer'],
             [['title', 'image_name'], 'string', 'max' => 50],
             [['isbn'], 'string', 'max' => 17],
@@ -69,7 +69,8 @@ class Book extends \yii\db\ActiveRecord
             ['_author', 'each', 'rule' => ['integer']]
         ];
     }
-
+    
+    
     /**
      * {@inheritdoc}
      */
