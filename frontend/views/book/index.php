@@ -1,6 +1,7 @@
 <?php
     
     use common\models\User;
+    use yii\helpers\Url;
     use yii\web\View;
     
     /** @var yii\web\View $this */
@@ -17,7 +18,8 @@ window.USER = {
 JS;
     
     $this->registerJs($js, View::POS_READY);
-    $this->registerJsVar('URL_edit_book', \yii\helpers\Url::to('/book/edit'), View::POS_HEAD);
+    $this->registerJsVar('URL_edit_book', Url::to('/book/edit'), View::POS_HEAD);
+    $this->registerJsVar('URL_image_path', Url::to('@frontend/web/images/'), View::POS_HEAD);
     
     $this->registerJsFile('/js/datatable.js', ['depends' => [\yii\web\JqueryAsset::class]]);
 ?>

@@ -33,6 +33,8 @@
                     ArrayHelper::map($authors, 'id', 'username'),
                     ['multiple' => true, 'value' => user()->id]
                 );?>
+            
+                <?= $form->field($book, '_file')->fileInput()->label(false) ?>
                 
                 <?= Html::submitButton('Save', [
                     'class' => 'btn btn-success',

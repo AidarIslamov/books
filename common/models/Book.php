@@ -7,6 +7,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "book".
@@ -59,12 +60,14 @@ class Book extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'isbn', 'year', 'created_at', 'updated_at'], 'required'],
+            [['title', 'isbn', 'year'], 'required'],
             [['year', 'created_at', 'updated_at'], 'integer'],
-            [['title', 'image_name'], 'string', 'max' => 50],
+            [['title', 'image_name'], 'string', 'max' => 256],
             [['isbn'], 'string', 'max' => 17],
             [['description'], 'string', 'max' => 256],
             [['isbn'], 'unique'],
+            [['_file'], 'file'],
+            ['_author', 'each', 'rule' => ['integer']],
         ];
     }
 
@@ -113,6 +116,7 @@ class Book extends \yii\db\ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
+
         parent::afterSave($insert, $changedAttributes);
         if($this->_author) {
             $currentAuthorList = ArrayHelper::getColumn($this->author, 'id');
@@ -169,5 +173,19 @@ class Book extends \yii\db\ActiveRecord
     {
         $author = Author::findOne(['book_id' => $this->id, 'user_id' => $userId]);
         return $author->delete();
+    }
+    
+    /**
+     * @return false|string
+     */
+    public function upload()
+    {
+        if ($this->validate()) {
+            $url = Url::to('@frontend/web/images/') . $this->_file->baseName . '.' . $this->_file->extension;
+            $this->_file->saveAs($url);
+            return $this->_file->baseName . '.' . $this->_file->extension;
+        } else {
+            return false;
+        }
     }
 }

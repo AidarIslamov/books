@@ -11,6 +11,7 @@
     use yii\web\ForbiddenHttpException;
     use yii\web\NotFoundHttpException;
     use Yii;
+    use yii\web\UploadedFile;
     
     class BookController extends Controller
     {
@@ -98,9 +99,17 @@
             $book = new Book();
             
             if(Yii::$app->request->isPost && $book->load(Yii::$app->request->post())) {
-                if($book->save()) {
-                    return $this->redirect(\yii\helpers\Url::toRoute(['book/edit', 'id' => $book->id]));
+                if($book->_file = UploadedFile::getInstance($book, '_file')) {
+                    if ($url = $book->upload()) {
+                        $book->image_name = $url;
+                    }
                 }
+                
+                
+                if($book->save()) {
+                    return $this->redirect(\yii\helpers\Url::toRoute(['/book']));
+                }
+                
             }
             
             $this->view->title = 'Create book';

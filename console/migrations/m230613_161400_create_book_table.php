@@ -19,7 +19,7 @@ class m230613_161400_create_book_table extends Migration
             'title' => $this->string(50)->notNull()->comment('Tittle of book'),
             'isbn' => $this->string(17)->notNull()->unique()->comment('ISBN'),
             'year' => $this->integer(4)->notNull()->comment('Issue year'),
-            'image_name' => $this->string(50)->defaultValue(null)->comment('Name of image'),
+            'image_name' => $this->string(256)->defaultValue(null)->comment('Name of image'),
             'description' => $this->string(256)->defaultValue(null)->comment('Description of book'),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull()
