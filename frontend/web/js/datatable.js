@@ -24,8 +24,8 @@ $(document).ready(function () {
             { data: 'isbn', title: 'ISBN' }, // 2
             { data: 'year', title: 'Year' }, // 3
             { data: 'description', title: 'About', width: '25%' }, // 4
-            { data: 'author', title: 'Autors' }, // 5
-            { data: null, title: 'Actions' } // 6
+            { data: 'author', title: 'Autors', searchable: false, orderable: false }, // 5
+            { data: null, searchable: false, orderable: false } // 6
         ],
         columnDefs: [
             {
@@ -43,9 +43,16 @@ $(document).ready(function () {
             },
             {
                 target: 6,
-                visible: window.hasOwnProperty('USER'),
+                // visible: window.hasOwnProperty('USER'),
                 render: function (data, type, row, meta) {
-
+                    if(window.hasOwnProperty('USER')) {
+                        if(row.author.find(o => o.id === window.USER.id)) {
+                            return `<a href='${URL_edit_book}/${row.id}' >Edit</a>`
+                        }
+                    }
+                    else {
+                        return `<a href='#' >Subscribe</a><br><a href='#' >Read</a>`
+                    }
                     return null;
                 }
             }

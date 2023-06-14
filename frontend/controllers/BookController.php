@@ -3,10 +3,12 @@
     namespace frontend\controllers;
     
     use common\models\Author;
+    use common\models\Book;
     use common\models\User;
     use frontend\controllers\actions\BookListAction;
     use yii\filters\AccessControl;
     use yii\web\Controller;
+    use yii\web\NotFoundHttpException;
     
     class BookController extends Controller
     {
@@ -22,7 +24,7 @@
                             'roles' => ['?', '@'],
                         ],
                         [
-                            'actions' => ['index'],
+                            'actions' => ['index', 'edit'],
                             'allow' => true,
                             'roles' => ['@'],
                         ],
@@ -51,5 +53,21 @@
             ;
             
             return $this->render('index', compact('authorsList'));
+        }
+        
+        public function actionEdit($id)
+        {
+            if (!$book = Book::find()
+                ->innerJoinWith('author')
+                ->where([Book::tableName() . '.id' => $id, Author::tableName() . '.user_id' => user()->id])
+                ->one()) {
+                throw new NotFoundHttpException('Book not found');
+            }
+            
+            $this->view->title = 'Edit book';
+            $authors = User::find()->all();
+            
+            return $this->render('edit', compact('book', 'authors'));
+        
         }
     }

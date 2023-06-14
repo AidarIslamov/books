@@ -44,6 +44,7 @@ return [
             'showScriptName' => false,
             'rules' => [
                  'about' => 'site/about',
+                 'book/edit/<id:[\d]+>' => 'book/edit',
                  '<controller>/<action>' => '<controller>/<action>',
             ],
         ]
