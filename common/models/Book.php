@@ -20,12 +20,10 @@ use yii\helpers\ArrayHelper;
  * @property int $created_at
  * @property int $updated_at
  *
- *
- * @property User[] $author
+ * @property Author[] $author
  */
 class Book extends \yii\db\ActiveRecord
 {
-    
     public $_file;
     
     public $_author;
@@ -61,16 +59,15 @@ class Book extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'isbn', 'year'], 'required'],
+            [['title', 'isbn', 'year', 'created_at', 'updated_at'], 'required'],
             [['year', 'created_at', 'updated_at'], 'integer'],
             [['title', 'image_name'], 'string', 'max' => 50],
             [['isbn'], 'string', 'max' => 17],
             [['description'], 'string', 'max' => 256],
-            ['_author', 'each', 'rule' => ['integer']]
+            [['isbn'], 'unique'],
         ];
     }
-    
-    
+
     /**
      * {@inheritdoc}
      */
@@ -89,21 +86,23 @@ class Book extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Author]].
+     *
+     * @return \yii\db\ActiveQuery|\common\models\ActiveQuery\AuthorQuery
+     */
+    public function getAuthor()
+    {
+        return $this->hasMany(User::class, ['id' => 'user_id'])
+            ->viaTable(Author::tableName(), ['book_id' => 'id']);
+    }
+
+    /**
      * {@inheritdoc}
      * @return \common\models\ActiveQuery\BookQuery the active query used by this AR class.
      */
     public static function find()
     {
         return new \common\models\ActiveQuery\BookQuery(get_called_class());
-    }
-    
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAuthor()
-    {
-        return $this->hasMany(User::class, ['id' => 'user_id'])
-            ->viaTable(Author::tableName(), ['book_id' => 'id']);
     }
     
     /**
@@ -171,6 +170,4 @@ class Book extends \yii\db\ActiveRecord
         $author = Author::findOne(['book_id' => $this->id, 'user_id' => $userId]);
         return $author->delete();
     }
-    
-    
 }
