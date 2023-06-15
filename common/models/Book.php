@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\components\Notification;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -132,6 +133,15 @@ class Book extends \yii\db\ActiveRecord
                 $this->removeAuthor($userId);
             }
         }
+        
+        
+        try {
+            // Правильней, такое делать отложенными задачами  (yiisoft/yii2-queue)
+            Notification::sendSMS($this);
+        }
+        catch (\Exception $exception) {
+            Yii::error("Failed send sms" . PHP_EOL);
+        }
     }
     
     
@@ -188,4 +198,6 @@ class Book extends \yii\db\ActiveRecord
             return false;
         }
     }
+    
+    
 }

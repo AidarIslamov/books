@@ -3,6 +3,11 @@
 
 `/admin` admin side(backend) - not used, but may if need ))
 
+
+### Notifications (subscriptions)
+configurations in file: ```common/config/params.php``` ['sms_service']
+method for hand testing by book id (console command): ```php yii test/sms-test 22``` where 22 - is book.id
+
 DIRECTORY STRUCTURE
 -------------------
 

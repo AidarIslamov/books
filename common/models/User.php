@@ -25,6 +25,8 @@ use yii\web\IdentityInterface;
  *
  *
  * @property Book[] $books
+ * @property Subscribtion[] $subscriptions
+ *
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -218,5 +220,13 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->hasMany(Book::class, ['id' => 'book_id'])
             ->viaTable(Author::tableName(), ['user_id' => 'id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSubscriptions()
+    {
+        return $this->hasMany(Subscribtion::class, ['author_id' => 'id']);
     }
 }
