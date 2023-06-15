@@ -37,12 +37,16 @@ AppAsset::register($this);
     ]);
     
     $menuItems = [];
+    
+    
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
     }
     else {
         $menuItems[] =  ['label' => 'My books', 'url' => Url::to('/book')];
     }
+        
+    $menuItems[] =  ['label' => 'Report', 'url' => ['/site/report']];
 
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav me-auto mb-2 mb-md-0'],

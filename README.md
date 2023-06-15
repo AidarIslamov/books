@@ -8,6 +8,14 @@
 configurations in file: ```common/config/params.php``` ['sms_service']
 method for hand testing by book id (console command): ```php yii test/sms-test 22``` where 22 - is book.id
 
+
+
+## STATISTIC
+url ``http://books/site/report``
+
+\frontend\controllers\SiteController::actionReport
+(https://github.com/AidarIslamov/books/blob/f37a4efa454d2a2a7d1074dfa58011949fdff1c9/frontend/controllers/SiteController.php#L99)
+
 DIRECTORY STRUCTURE
 -------------------
 

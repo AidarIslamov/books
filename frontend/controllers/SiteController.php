@@ -3,11 +3,13 @@
 namespace frontend\controllers;
 
 use common\models\Author;
+use common\models\Book;
 use common\models\User;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
 use yii\base\InvalidArgumentException;
+use yii\db\Expression;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -85,6 +87,27 @@ class SiteController extends Controller
         ;
         
         return $this->render('index', compact('authorsList'));
+    }
+    
+    /**
+     * Statistic of author books by year
+     * limited as 10
+     *
+     * @return string
+     * @throws \yii\db\Exception
+     */
+    public function actionReport()
+    {
+        $authors = User::find()
+            ->select([User::tableName() . '.*', new Expression("COUNT(book.id) as book_count"), Book::tableName() . '.year'])
+            ->joinWith('books')
+            ->groupBy([User::tableName() . '.id', Book::tableName() . '.year'])
+            ->orderBy(['book_count' => SORT_DESC])
+            ->limit(10)
+            ->createCommand()->queryAll()
+        ;
+        
+        return $this->render('report', compact('authors'));
     }
 
     /**
