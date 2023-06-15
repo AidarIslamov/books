@@ -46,6 +46,7 @@ return [
                  'about' => 'site/about',
                  'book/edit/<id:[\d]+>' => 'book/edit',
                  'book/read/<id:[\d]+>' => 'book/read',
+                 'book/subscribe/<id:[\d]+>' => 'book/subscribe',
                  '<controller>/<action>' => '<controller>/<action>',
             ],
         ]

@@ -64,8 +64,7 @@ $(document).ready(function () {
                         }
                     }
                     else {
-
-                        return `<a href='#' >Subscribe</a> <br><a href="${URL_book_read_path}/${row.id} " >Read</a>`
+                        return `<a href='book/subscribe/${row.id}' >Subscribe</a> <br><a href="${URL_book_read_path}/${row.id} " >Read</a>`
                     }
                     return null;
                 }

@@ -4,9 +4,12 @@
     
     use common\models\Author;
     use common\models\Book;
+    use common\models\Subscribtion;
     use common\models\User;
     use frontend\controllers\actions\BookListAction;
+    use yii\db\Transaction;
     use yii\filters\AccessControl;
+    use yii\helpers\ArrayHelper;
     use yii\web\Controller;
     use yii\web\ForbiddenHttpException;
     use yii\web\NotFoundHttpException;
@@ -22,7 +25,7 @@
                     'class' => AccessControl::class,
                     'rules' => [
                         [
-                            'actions' => ['list-data-table', 'read'],
+                            'actions' => ['list-data-table', 'read', 'subscribe'],
                             'allow' => true,
                             'roles' => ['?', '@'],
                         ],
@@ -147,6 +150,42 @@
             $authors = User::find()->all();
             
             return $this->render('create', compact('book', 'authors'));
+        }
+        
+        
+        public function actionSubscribe($id)
+        {
+            $model = new Subscribtion();
+            
+            if($model->load(Yii::$app->request->post())) {
+                $transaction = Yii::$app->db->beginTransaction();
+                $hasError = false;
+                foreach ($model->_authors as $authorId) {
+                    $subscription = new Subscribtion();
+                    $subscription->setAttributes([
+                        'name'   => $model->name,
+                        'phone'  => $model->phone,
+                        'email'  => $model->email,
+                        'author_id' => $authorId,
+                    ]);
+                    if (!$subscription->save()) {
+                        $transaction->rollback();
+                        $hasError = $subscription->getErrors();
+                    }
+                }
+                if(!$hasError) {
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success', 'Thank you for contacting us.');
+                }
+            }
+            
+            if ($book = Book::findOne(['id' => $id]) && !$model->_authors) {
+                $model->_authors = ArrayHelper::getColumn($book->author, 'id');
+            }
+            $authors = User::find()->all();
+            
+            return $this->render('subscribe', compact('model', 'authors'));
+        
         }
         
     }
