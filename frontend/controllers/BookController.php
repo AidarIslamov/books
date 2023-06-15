@@ -22,7 +22,7 @@
                     'class' => AccessControl::class,
                     'rules' => [
                         [
-                            'actions' => ['list-data-table'],
+                            'actions' => ['list-data-table', 'read'],
                             'allow' => true,
                             'roles' => ['?', '@'],
                         ],
@@ -46,6 +46,12 @@
             ];
         }
         
+        
+        /**
+         * Books list (for authenticated users only)
+         *
+         * @return string
+         */
         public function actionIndex()
         {
             $authorsList = User::find()
@@ -58,6 +64,27 @@
             return $this->render('index', compact('authorsList'));
         }
         
+        public function actionRead($id)
+        {
+            if (!$book = Book::findOne(['id' => $id])) {
+                throw new NotFoundHttpException('Book not found');
+            }
+            
+            return $this->render('read', compact('book'));
+        }
+        
+        
+        /**
+         * Edit book (for book owner)
+         *
+         * @param $id
+         *
+         * @return array|string|\yii\web\Response
+         * @throws ForbiddenHttpException
+         * @throws NotFoundHttpException
+         * @throws \Throwable
+         * @throws \yii\db\StaleObjectException
+         */
         public function actionEdit($id)
         {
             if (!$book = Book::find()
@@ -94,17 +121,21 @@
             return $this->render('edit', compact('book', 'authors'));
         }
         
+        
+        /**
+         * Create book
+         *
+         * @return string|\yii\web\Response
+         */
         public function actionCreate()
         {
             $book = new Book();
-            
             if(Yii::$app->request->isPost && $book->load(Yii::$app->request->post())) {
                 if($book->_file = UploadedFile::getInstance($book, '_file')) {
                     if ($url = $book->upload()) {
                         $book->image_name = $url;
                     }
                 }
-                
                 
                 if($book->save()) {
                     return $this->redirect(\yii\helpers\Url::toRoute(['/book']));

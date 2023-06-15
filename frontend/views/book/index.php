@@ -19,9 +19,12 @@ JS;
     
     $this->registerJs($js, View::POS_READY);
     $this->registerJsVar('URL_edit_book', Url::to('/book/edit'), View::POS_HEAD);
-    $this->registerJsVar('URL_image_path', Url::to('@frontend/web/images/'), View::POS_HEAD);
+    $this->registerJsVar('URL_book_read_path', Url::to(['book/read']), View::POS_HEAD);
+    $this->registerJsVar('URL_image_path', '/images/', View::POS_HEAD);
     
     $this->registerJsFile('/js/datatable.js', ['depends' => [\yii\web\JqueryAsset::class]]);
+    
+    $this->registerCssFile('/css/book.css');
 ?>
 <div class="site-index">
     <div class="body-content">
@@ -34,13 +37,13 @@ JS;
             <div class="col-12">
                 <form class="row" id="table_filter">
                     <div class="col-sm mb-3">
-                        <input type="text" class="form-control form-control-sm" data-col-index="1" placeholder="Title" aria-label="Title">
+                        <input type="text" class="form-control form-control-sm" data-col-index="2" placeholder="Title" aria-label="Title">
                     </div>
                     <div class="col-sm mb-3">
-                        <input type="text" class="form-control form-control-sm" data-col-index="2" placeholder="ISBN" aria-label="Code">
+                        <input type="text" class="form-control form-control-sm" data-col-index="3" placeholder="ISBN" aria-label="Code">
                     </div>
                     <div class="col-sm mb-3">
-                        <select class="form-control form-control-sm" data-col-index="5" aria-label="Author">
+                        <select class="form-control form-control-sm" data-col-index="6" aria-label="Author">
                             <option value="">Select author</option>
                             <?php
                                 /**

@@ -20,16 +20,27 @@ $(document).ready(function () {
         },
         columns: [
             { data: 'id', title: '' }, // 0
-            { data: 'title', title: 'Title' }, // 1
-            { data: 'isbn', title: 'ISBN' }, // 2
-            { data: 'year', title: 'Year' }, // 3
-            { data: 'description', title: 'About', width: '25%' }, // 4
-            { data: 'author', title: 'Autors', searchable: false, orderable: false }, // 5
-            { data: null, searchable: false, orderable: false } // 6
+            { data: 'image_name', title: 'Image' }, // 1
+            { data: 'title', title: 'Title' }, // 2
+            { data: 'isbn', title: 'ISBN' }, // 3
+            { data: 'year', title: 'Year' }, // 4
+            { data: 'description', title: 'About', width: '25%' }, // 5
+            { data: 'author', title: 'Autors', searchable: false, orderable: false }, // 6
+            { data: null, searchable: false, orderable: false } // 7
         ],
         columnDefs: [
             {
-                target: 5,
+                target: 1,
+                className: 'text-center',
+                render: function (data, type, row, meta) {
+                    if(data) {
+                        return `<img class="book_image" src="${URL_image_path + data}" alt="${row.title}">`
+                    }
+                    return null;
+                }
+            },
+            {
+                target: 6,
                 render: function (data, type, row, meta) {
                     if(data) {
                         let authors = '';
@@ -42,7 +53,7 @@ $(document).ready(function () {
                 }
             },
             {
-                target: 6,
+                target: 7,
                 // visible: window.hasOwnProperty('USER'),
                 render: function (data, type, row, meta) {
                     if(window.hasOwnProperty('USER')) {
@@ -53,7 +64,8 @@ $(document).ready(function () {
                         }
                     }
                     else {
-                        return `<a href='#' >Subscribe</a><br><a href='#' >Read</a>`
+
+                        return `<a href='#' >Subscribe</a> <br><a href="${URL_book_read_path}/${row.id} " >Read</a>`
                     }
                     return null;
                 }

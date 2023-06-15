@@ -45,6 +45,7 @@ return [
             'rules' => [
                  'about' => 'site/about',
                  'book/edit/<id:[\d]+>' => 'book/edit',
+                 'book/read/<id:[\d]+>' => 'book/read',
                  '<controller>/<action>' => '<controller>/<action>',
             ],
         ]
